@@ -1,1 +1,1 @@
-require "foobara/least_recently_used_cache"
+require "foobara/lru_cache"
