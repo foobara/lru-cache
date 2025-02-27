@@ -1,7 +1,7 @@
 require_relative "version"
 
 source "https://rubygems.org"
-ruby Foobara::LeastRecentlyUsedCache::MINIMUM_RUBY_VERSION
+ruby Foobara::LruCache::MINIMUM_RUBY_VERSION
 
 gemspec
 

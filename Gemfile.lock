@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    foobara-least-recently-used-cache (0.0.1)
+    foobara-lru-cache (0.0.1)
 
 GEM
   remote: https://rubygems.org/
@@ -156,7 +156,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
-  foobara-least-recently-used-cache!
+  foobara-lru-cache!
   foobara-rubocop-rules
   foobara-spec-helpers
   guard-rspec

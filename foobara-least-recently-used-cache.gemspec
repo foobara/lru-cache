@@ -1,15 +1,15 @@
 require_relative "version"
 
 Gem::Specification.new do |spec|
-  spec.name = "foobara-least-recently-used-cache"
-  spec.version = Foobara::LeastRecentlyUsedCache::VERSION
+  spec.name = "foobara-lru-cache"
+  spec.version = Foobara::LruCache::VERSION
   spec.authors = ["Miles Georgi"]
   spec.email = ["azimux@gmail.com"]
 
-  spec.summary = "No description. Add one."
-  spec.homepage = "https://github.com/foobara/least-recently-used-cache"
+  spec.summary = "Basic least-recently-used cache implementation"
+  spec.homepage = "https://github.com/foobara/lru-cache"
   spec.license = "Apache-2.0 OR MIT"
-  spec.required_ruby_version = Foobara::LeastRecentlyUsedCache::MINIMUM_RUBY_VERSION
+  spec.required_ruby_version = Foobara::LruCache::MINIMUM_RUBY_VERSION
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
