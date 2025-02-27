@@ -13,7 +13,7 @@ module Foobara
 
     attr_reader :size
 
-    def initialize(capacity = 100)
+    def initialize(capacity = 10)
       @capacity = capacity
       @size = 0
       @key_to_node = {}
