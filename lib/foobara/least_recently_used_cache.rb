@@ -1,3 +1,4 @@
-require "foobara/all"
-
-Foobara::Util.require_directory "#{__dir__}/../../src"
+module Foobara
+  module LeastRecentlyUsedCache
+  end
+end

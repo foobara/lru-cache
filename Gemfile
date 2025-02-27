@@ -5,12 +5,9 @@ ruby Foobara::LeastRecentlyUsedCache::MINIMUM_RUBY_VERSION
 
 gemspec
 
-gem "foobara-dotenv-loader"
-
 gem "rake"
 
 group :development do
-  gem "foob"
   gem "foobara-rubocop-rules"
   gem "guard-rspec"
   gem "rubocop-rake"
@@ -31,6 +28,4 @@ group :test do
   gem "rspec-its"
   gem "ruby-prof"
   gem "simplecov"
-  gem "vcr"
-  gem "webmock"
 end
