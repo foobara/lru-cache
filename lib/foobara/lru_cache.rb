@@ -3,10 +3,11 @@ module Foobara
     # doubly-linked list whose methods live in LruCache for now
     class Node
       attr_accessor :prev, :next
-      attr_reader :value
+      attr_reader :key, :value
 
-      def initialize(value)
+      def initialize(key, value)
         @value = value
+        @key = key
       end
     end
 
@@ -21,52 +22,45 @@ module Foobara
 
     def cached(key)
       if @key_to_node.key?(key)
-        move_node_to_front(key)
+        node = @key_to_node[key]
+        move_node_to_front(node)
+        node.value
       else
         value = yield
-        prepend_node(value)
+        node = Node.new(key, value)
+        @key_to_node[key] = node
+        prepend_node(node)
+        value
       end
+    end
+
+    def key?(key)
+      @key_to_node.key?(key)
     end
 
     private
 
-    def move_node_to_front(key)
-      node = @key_to_node[key]
-      node.value
+    def move_node_to_front(node)
+      return if node == @head
 
-      unless node == @head
-        delete_node(node)
-
-        node.next = @head&.next
-        @head = node
-      end
-
-      node.value
-    end
-
-    def delete_node(node)
       if node == @tail
-        if node.prev
-          @tail = node.prev
-        end
+        @tail = node.prev
       end
 
       prev_node = node.prev
 
-      if prev_node
-        node.prev = nil
-        prev_node.next = node.next
-      end
+      node.prev = nil
+      prev_node.next = node.next
 
       if node.next
         node.next.prev = prev_node
       end
+
+      node.next = @head
+      @head = node
     end
 
-    def prepend_node(value)
-      node = Node.new(value)
-      @key_to_node[node.value] = node
-
+    def prepend_node(node)
       if @size == 0
         @head = @tail = node
         @size = 1
@@ -78,13 +72,14 @@ module Foobara
         if @size < @capacity
           @size += 1
         else
-          @key_to_node.delete(@tail.value)
-          @tail.prev.next = nil
-          @tail = @tail.prev
+          @key_to_node.delete(@tail.key)
+          prev_node = @tail.prev
+          if prev_node
+            prev_node.next = nil
+            @tail = prev_node
+          end
         end
       end
-
-      value
     end
   end
 end
