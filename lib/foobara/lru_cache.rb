@@ -43,20 +43,20 @@ module Foobara
     def move_node_to_front(node)
       return if node == @head
 
-      if node == @tail
-        @tail = node.prev
-      end
-
       prev_node = node.prev
+      next_node = node.next
 
-      node.prev = nil
-      prev_node.next = node.next
-
-      if node.next
-        node.next.prev = prev_node
+      if node == @tail
+        @tail = prev_node
+        @tail.next = nil
+      else
+        prev_node.next = next_node
+        next_node.prev = prev_node
       end
 
+      @head.prev = node
       node.next = @head
+      node.prev = nil
       @head = node
     end
 
