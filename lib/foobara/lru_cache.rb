@@ -21,24 +21,46 @@ module Foobara
     end
 
     def cached(key)
-      if @key_to_node.key?(key)
-        node = @key_to_node[key]
-        move_node_to_front(node)
-        node.value
-      else
-        value = yield
-        node = Node.new(key, value)
-        @key_to_node[key] = node
-        prepend_node(node)
-        value
+      mutex.synchronize do
+        if @key_to_node.key?(key)
+          node = @key_to_node[key]
+          move_node_to_front(node)
+          return node.value
+        end
       end
+
+      value = yield
+      mutex.synchronize do
+        if @key_to_node.key?(key)
+          node = @key_to_node[key]
+          move_node_to_front(node)
+        else
+          node = Node.new(key, value)
+          @key_to_node[key] = node
+          prepend_node(node)
+        end
+      end
+
+      value
     end
 
     def key?(key)
       @key_to_node.key?(key)
     end
 
+    def reset!
+      mutex.synchronize do
+        @size = 0
+        @key_to_node.clear
+        @head = @tail = nil
+      end
+    end
+
     private
+
+    def mutex
+      @mutex ||= Mutex.new
+    end
 
     def move_node_to_front(node)
       return if node == @head

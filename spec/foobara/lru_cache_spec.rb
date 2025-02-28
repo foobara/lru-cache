@@ -51,15 +51,46 @@ RSpec.describe Foobara::LruCache do
         expect(cache.key?(:key4)).to be true
       end
     end
+
+    context "when it is called nested" do
+      def cache_it(key, initial: true)
+        cache.cached(key) do
+          if initial
+            cache_it(key, initial: false)
+          else
+            key * 2
+          end
+        end
+      end
+
+      it "can still cache it even if nested" do
+        expect {
+          expect(cache_it(4)).to eq(8)
+        }.to change(cache, :size).from(0).to(1)
+
+        expect {
+          expect(cache_it(4)).to eq(8)
+        }.to_not change(cache, :size)
+      end
+    end
+
+    it "works with keys other than strings" do
+      key = { foo: ["bar"], baz: 100 }
+      expect(cache.cached(key) { "yay!" }).to eq("yay!")
+      expect(cache.key?(key)).to be true
+      expect(cache.size).to eq(1)
+      expect(cache.cached(key) { "yay!" }).to eq("yay!")
+      expect(cache.key?(key)).to be true
+      expect(cache.size).to eq(1)
+    end
   end
 
-  it "works with keys other than strings" do
-    key = { foo: ["bar"], baz: 100 }
-    expect(cache.cached(key) { "yay!" }).to eq("yay!")
-    expect(cache.key?(key)).to be true
-    expect(cache.size).to eq(1)
-    expect(cache.cached(key) { "yay!" }).to eq("yay!")
-    expect(cache.key?(key)).to be true
-    expect(cache.size).to eq(1)
+  describe "#reset!" do
+    it "resets the cache" do
+      cache.cached(:key1) { "value1" }
+      expect {
+        cache.reset!
+      }.to change(cache, :size).from(1).to(0)
+    end
   end
 end
