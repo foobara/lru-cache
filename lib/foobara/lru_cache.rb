@@ -30,6 +30,7 @@ module Foobara
       end
 
       value = yield
+
       mutex.synchronize do
         if @key_to_node.key?(key)
           node = @key_to_node[key]
@@ -46,6 +47,26 @@ module Foobara
 
     def key?(key)
       @key_to_node.key?(key)
+    end
+
+    def get(key)
+      mutex.synchronize do
+        if @key_to_node.key?(key)
+          node = @key_to_node[key]
+          move_node_to_front(node)
+          return true, node.value
+        end
+      end
+    end
+
+    def set_if_missing(key, value)
+      mutex.synchronize do
+        unless @key_to_node.key?(key)
+          node = Node.new(key, value)
+          @key_to_node[key] = node
+          prepend_node(node)
+        end
+      end
     end
 
     def reset!

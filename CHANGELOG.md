@@ -1,3 +1,7 @@
+## [1.0.0] - 2025-08-10
+
+- Add #get/#set_if_missing to facilitate non-block use-cases
+
 ## [0.0.2] - 2025-02-28
 
 - Fix bug that corrupts the cache

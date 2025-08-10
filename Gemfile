@@ -23,7 +23,7 @@ group :development, :test do
 end
 
 group :test do
-  gem "foobara-spec-helpers"
+  gem "foobara-spec-helpers", "< 2.0.0"
   gem "rspec"
   gem "rspec-its"
   gem "ruby-prof"

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    foobara-lru-cache (0.0.2)
+    foobara-lru-cache (1.0.0)
 
 GEM
   remote: https://rubygems.org/
@@ -165,7 +165,7 @@ PLATFORMS
 DEPENDENCIES
   foobara-lru-cache!
   foobara-rubocop-rules
-  foobara-spec-helpers
+  foobara-spec-helpers (< 2.0.0)
   guard-rspec
   irb
   pry

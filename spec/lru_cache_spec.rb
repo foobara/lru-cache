@@ -85,6 +85,21 @@ RSpec.describe Foobara::LruCache do
     end
   end
 
+  describe "#get" do
+    context "when there's a value set" do
+      before do
+        cache.set_if_missing(:key1, "value1")
+      end
+
+      it "returns the value for the key" do
+        hit, value = cache.get(:key1)
+
+        expect(hit).to be true
+        expect(value).to eq("value1")
+      end
+    end
+  end
+
   describe "#reset!" do
     it "resets the cache" do
       cache.cached(:key1) { "value1" }
