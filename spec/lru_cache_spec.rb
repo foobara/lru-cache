@@ -17,10 +17,10 @@ RSpec.describe Foobara::LruCache do
         expect {
           called = false
           expect(cache.cached(:key1) {
-            # :nocov:
+            # simplecov:disable
             called = true
             "value1"
-            # :nocov:
+            # simplecov:enable
           }).to eq("value1")
           expect(called).to be false
         }.to_not change(cache, :size)
